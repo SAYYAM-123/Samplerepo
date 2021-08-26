@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Countries</h2>
+
+
+</button>
+
+
+<p id="demo"></p>
+
+<script>
+function myDisplayer(some) {
+  document.getElementById("demo").innerHTML = some;
+}
+
+let myPromise = new Promise(function(myResolve, myReject) {
+  let req = new XMLHttpRequest();
+  req.open('GET', "https://restcountries.eu/rest/v2/all");
+  req.onload = function() {
+    if (req.status == 200) {
+        
+        let returnValue = req.responseText;
+        
+        var y = JSON.parse(returnValue); 
+        let x= "";
+        
+        for(var i = 0; i < y.length; i++) {
+            
+             var obj = y[i];
+
+             x+=obj.name+"\n";
+
+            }
+            myResolve(x);
+    } else {
+      myReject("File not Found");
+    }
+  };
+  req.send();
+});
+
+myPromise.then(
+  function(value) {myDisplayer(value);},
+  function(error) {myDisplayer(error);}
+);
+</script>
+
+</body>
+</html>
